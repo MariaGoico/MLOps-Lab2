@@ -3,6 +3,7 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
 from fastapi import Request
 from pathlib import Path
 import io
@@ -64,31 +65,42 @@ async def resize_image(
     """
     Resize an uploaded image to a random size between 28 and 225.
 
-    The user uploads a binary image. We convert it using PIL,
-    send it through the resize() logic method, and return it.
+    The user uploads a binary image (multipart/form-data).
+    We convert it using PIL, send it through the resize() logic method, 
+    and return the resized image.
     """
 
     try:
-        # Read file bytes
+        # Read the binary file from UploadFile
         contents = await file.read()
+        
+        # Open with PIL and convert to RGB
         image = Image.open(io.BytesIO(contents)).convert("RGB")
 
         # Save the uploaded image temporarily
         input_path = Path("temp_input.jpg")
-        input_path.write_bytes(contents)
+        image.save(input_path, format="JPEG")
 
         # Apply random resize using your utilities
         resized_img = resize(str(input_path))
 
-        # Save to a bytes buffer to return
-        buf = io.BytesIO()
-        resized_img.save(buf, format="JPEG")
-        buf.seek(0)
+        # Create a buffer of bytes in memory
+        img_bytes = io.BytesIO()
+        
+        # Save this buffer as JPEG format
+        resized_img.save(img_bytes, format="JPEG")
+        
+        # Return the pointer to the beginning of the buffer
+        img_bytes.seek(0)
 
-        return FileResponse(
-            buf,
+        # Clean up temporary file
+        input_path.unlink(missing_ok=True)
+
+        # Return the image
+        return StreamingResponse(
+            img_bytes,
             media_type="image/jpeg",
-            filename="resized.jpg",
+            headers={"Content-Disposition": "attachment; filename=resized.jpg"}
         )
 
     except Exception as e:
