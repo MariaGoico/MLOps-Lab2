@@ -16,8 +16,6 @@ def predict(image):
         str: Randomly selected class name
     """
     classes = ['cat', 'dog', 'frog', 'horse']
-    if not classes:
-        raise ValueError("Classes list cannot be empty")
     
     return random.choice(list(classes))
 

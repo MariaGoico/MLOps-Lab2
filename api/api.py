@@ -30,7 +30,7 @@ async def home(request: Request):
     """
     Render the HTML homepage.
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html", {"request": request})
 
 
 # ---------------------------------------------------------
@@ -42,7 +42,7 @@ async def predict_class(
 ):
     """
     Predict a random class for an uploaded image.
-    The classes are hardcoded for now (dog, cat, bird, fish).
+    The classes are hardcoded for now (dog, cat, frog, horse).
     
     Args:
         file: The image file to classify
@@ -150,5 +150,5 @@ async def get_output_file(filename: str):
 
 
 # Entry point (for direct execution only)
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     uvicorn.run("api.api:app", host="localhost", port=8000, reload=True)

@@ -39,14 +39,14 @@ def classify():
 
 @classify.command(
     name="predict",
-    help="Predict a random class for an image (using hardcoded classes: dog, cat, bird, fish). "
+    help="Predict a random class for an image (using hardcoded classes: dog, cat, frog, horse). "
          "Example: python -m cli.cli classify predict image.jpg"
 )
 @click.argument("image_path")
 def classify_predict(image_path):
     """
     Predict a random class for a given image.
-    Classes are hardcoded for testing: dog, cat, bird, fish.
+    Classes are hardcoded for testing: dog, cat, frog, horse.
 
     Example:
         python -m cli.cli classify predict image.jpg
@@ -58,7 +58,7 @@ def classify_predict(image_path):
         return
     
     # Hardcoded classes (same as API)
-    classes = ['dog', 'cat', 'bird', 'fish']
+    classes = ['dog', 'cat', 'frog', 'horse']
     
     # Predict
     result = predict(classes)
@@ -208,5 +208,5 @@ def preprocess_full_pipeline(image_path, output):
 # ─────────────────────────────
 # ENTRY POINT
 # ─────────────────────────────
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     cli()
