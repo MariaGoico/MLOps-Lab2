@@ -54,7 +54,28 @@ def test_resize_random_dimensions(mock_rand, dummy_image):
     img = resize(dummy_image)
     assert img.size == (100, 100)
 
+def test_resize_negative_width(dummy_image):
+    """Test that resize raises error for negative width."""
+    with pytest.raises(ValueError, match="Width must be greater than 0"):
+        resize(dummy_image, width=-50, height=60)
 
+
+def test_resize_negative_height(dummy_image):
+    """Test that resize raises error for negative height."""
+    with pytest.raises(ValueError, match="Height must be greater than 0"):
+        resize(dummy_image, width=50, height=-60)
+
+
+def test_resize_zero_width(dummy_image):
+    """Test that resize raises error for zero width."""
+    with pytest.raises(ValueError, match="Width must be greater than 0"):
+        resize(dummy_image, width=0, height=60)
+
+
+def test_resize_zero_height(dummy_image):
+    """Test that resize raises error for zero height."""
+    with pytest.raises(ValueError, match="Height must be greater than 0"):
+        resize(dummy_image, width=50, height=0)
 # ─────────────────────────────
 # PREPROCESSING FUNCTIONS
 # ─────────────────────────────

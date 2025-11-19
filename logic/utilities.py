@@ -44,6 +44,12 @@ def resize(image_path, width=None, height=None):
     if height is None:
         height = random.randint(28, 225)
     
+    # Add validation for dimensions
+    if width <= 0:
+        raise ValueError("Width must be greater than 0")
+    if height <= 0:
+        raise ValueError("Height must be greater than 0")
+    
     new_image = image.resize((width, height))
     return new_image
 
