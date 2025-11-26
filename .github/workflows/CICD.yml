@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build   # it is not executed if build fails
     env:
-          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/calculator-api:latest
+          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/mlops-lab2:latest
     steps:
       - name: Checkout repository (with submodules)
         uses: actions/checkout@v4 
