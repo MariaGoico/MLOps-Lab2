@@ -38,4 +38,4 @@ COPY static ./static
 # Expose the port associated with the API created with FastAPI
 EXPOSE 8000
 # Default command: it starts the API with uvicorn
-CMD ["uvicorn", "api.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn api.api:app --host 0.0.0.0 --port ${PORT}"]
